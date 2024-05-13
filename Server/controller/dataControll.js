@@ -1,42 +1,54 @@
 import dataModel from "../models/data.Model.js";
 
 export const Create = async (req, res) => {
-  const { task } = req.body;
-  if (!task) {
-    return res.status(400).json({ error: "Task is required" });
-  }
+  try {
+    const { task } = req.body;
+    if (!task) {
+      return res.status(400).json({ error: "Task is required" });
+    }
 
-  dataModel
-    .create({ task: task })
-    .then((result) => res.json(result))
-    .catch((err) => res.json(err));
-};  
+    const createdTask = await dataModel.create({ task: task });
+    res.json(createdTask);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 export const getAll = async (req, res) => {
-  dataModel
-    .find()
-    .then((result) => res.json(result))
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const allTasks = await dataModel.find();
+    res.json(allTasks);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const updateTask = async (req, res) => {
-  const { id } = req.params;
-  dataModel
-    .findByIdAndUpdate(id, { done: true }, { new: true })
-    .then((result) => res.json(result))
-    .catch((err) => console.log(err));
+  try {
+    const { id } = req.params;
+    const updatedTask = await dataModel.findByIdAndUpdate(
+      id,
+      { done: true },
+      { new: true }
+    );
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    res.json(updatedTask);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const DeleteTask = async (req, res) => {
-  const { id } = req.params;
-  dataModel
-    .findByIdAndDelete(id)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const { id } = req.params;
+    const deletedTask = await dataModel.findByIdAndDelete(id);
+    if (!deletedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    res.json(deletedTask);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
