@@ -1,9 +1,13 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 
 const dataModel = new mongoose.Schema({
-  data: {
+  task: {
     type: String,
     require: true,
+  },
+  done: {
+    type: Boolean,
+    default: false,
   },
 });
 

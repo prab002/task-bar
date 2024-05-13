@@ -1,11 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
+import route from "./routes/taskRout.js";
 
 const app = express();
-
 app.use(bodyParser.json());
 app.use(cors());
 dotenv.config();
@@ -28,3 +28,6 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Backend is Working ⚒️");
 });
+
+// route for task 
+app.use("/",route)
