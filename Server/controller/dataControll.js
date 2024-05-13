@@ -8,7 +8,9 @@ export const Create = async (req, res) => {
     }
 
     const createdTask = await dataModel.create({ task: task });
-    res.json(createdTask);
+    res
+      .status(201)
+      .json({ task: createdTask, message: "Task created successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
