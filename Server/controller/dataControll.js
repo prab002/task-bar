@@ -36,9 +36,7 @@ export const updateTask = async (req, res) => {
     if (!updatedTask) {
       return res.status(404).json({ error: "Task not found" });
     }
-    res
-      .status(201)
-      .json({ task: updatedTask, message: "Task updated successfully" });
+    res.status(201).json({ message: "Task updated successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
